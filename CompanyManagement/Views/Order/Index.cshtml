@@ -1,0 +1,76 @@
+﻿@model IEnumerable<CompanyManagement.Models.OrdersViewModel>
+
+@{
+    ViewBag.Title = "Orders List";
+}
+
+<h1 class="jumbotron" style="color:white">ORDERS</h1>
+<table class="table">
+    <tr>
+        <th></th>
+        <th>@Html.DisplayName("OrderId")</th>
+
+        <th>@Html.DisplayName("Supplier")</th>
+
+        <th>@Html.DisplayNameFor(model => model.Description)</th>
+
+        <th>@Html.DisplayName("Products")</th>
+
+        <th>@Html.DisplayName("Quantity")</th>
+
+        <th>@Html.DisplayNameFor(model => model.Price)</th>
+
+        <th>@Html.DisplayNameFor(model => model.Date)</th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        @Html.HiddenFor(modelItem => item.IdSupplier)
+        <tr>
+            <td></td>
+            <td>@Html.DisplayFor(modelItem => item.IdOrder)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Supplier.Name)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+
+            <td>
+                @foreach (var x in item.OrderProduct)
+                {
+                    <p>@Html.DisplayName(x.Product.Name) @Html.DisplayName("€ " + x.Product.Price.ToString()) </p>
+                }
+            </td>
+
+            <td>
+                @foreach (var x in item.OrderProduct)
+                {
+                    <p>@Html.DisplayName(x.Qty.ToString())</p>
+                }
+            </td>
+
+            <td>@Html.DisplayName("€ " + item.Price)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+            <td></td>
+            <td>
+                @Html.Action("_DeleteOrder", new { IdOrder = item.IdOrder })
+                @Html.Action("_EditOrder", new { IdOrder = item.IdOrder })
+            </td>
+        </tr>
+    }
+</table>
+<div class="form-group col-xs-offset-10">
+    @Html.Action("_AddOrder")
+    <a class="btn btn-success glyphicon glyphicon-export" href="@Url.Action("ExportExcel","Order",new { orderViewModelList = Model })"></a>
+</div>
+
+@*<script>
+$(document).ready(function () {
+   $(".datepicker").datepicker({
+      dateFormat: "dd-mm-yy",
+      changemonth: true,
+      changeyear: true
+      });
+   });
+</script>*@

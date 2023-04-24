@@ -1,0 +1,86 @@
+﻿@model CompanyManagement.Models.ProductPriceViewModel
+@{
+    ViewBag.Title = "Generate Product Price";
+}
+
+<h1 class="jumbotron">GENERATE PRODUCT PRICE</h1>
+
+@using (Html.BeginForm("GenerateProductPrice", "Product"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.Label("Materials Price", new { @class = "control-label" })
+            </div>
+            <div class="col-xs-2">
+                @Html.Label("Manpower Price", new { @class = "control-label" })
+            </div>
+            <div class="col-xs-2">
+                @Html.Label("Fixed Costs", new { @class = "control-label" })
+            </div>
+            <div class="col-xs-2">
+                @Html.Label("Delivery Price", new { @class = "control-label" })
+            </div>
+            <div class="col-xs-2">
+                @Html.Label("Estimated production Qty", new { @class = "control-label" })
+            </div>
+            <div class="col-xs-2">
+                @Html.Label("Percentage Increase", new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.TextBoxFor(model => model.Materials, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Materials, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBoxFor(model => model.Manpower, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Manpower, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBoxFor(model => model.FixedCosts, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FixedCosts, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBoxFor(model => model.Delivery, "", new { @class = "form-control" })
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBoxFor(model => model.Qty, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBoxFor(model => model.PercentageIncrease, "", new { @class = "form-control" })
+            </div>
+        </div>
+        <br />
+        <h1 class="jumbotron">PRODUCT DETAILS</h1>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-3">
+                    @Html.Label("Name", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.Label("Description", new { @class = "control-label" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <br />
+            <button type="submit" class="btn btn-block btn-primary glyphicon glyphicon-ok "></button>
+        </div>
+    </div>
+}

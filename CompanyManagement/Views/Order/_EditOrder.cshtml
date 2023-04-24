@@ -1,0 +1,94 @@
+﻿@model CompanyManagement.Models.OrdersViewModel
+@{
+    ViewBag.Title = "Edit Order";
+}
+
+<button type="button" class="glyphicon glyphicon-edit btn btn-primary" data-toggle="modal" data-target="#EditModal@(Model.IdOrder)">
+</button>
+
+<div class="modal fade" id="EditModal@(Model.IdOrder)" tabindex="1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3>EDIT ORDER</h3>
+            </div>
+            <div class="modal-body">
+                <div>
+                    @using (Html.BeginForm("_EditOrder"))
+                    {
+                        <div class="form-horizontal">
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.IdOrder)
+
+                            <div class="form-group">
+                                <div class="col-xs-4">
+                                    @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Description)
+                                </div>
+                                <div class="col-xs-4">
+                                    @Html.LabelFor(model => model.Price, new { @class = "control-label" })
+                                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Price)
+                                </div>
+                                <div class="col-xs-4">
+                                    @Html.LabelFor(model => model.Date, new { @class = "control-label" })
+                                    @Html.TextBoxFor(model => model.Date, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Date)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-4">
+                                    @Html.Label("Supplier", new { @class = "control-label" })
+                                    @Html.DropDownListFor(model => model.IdSupplier, Model.SupplierList, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.IdSupplier)
+                                </div>
+                                <div class="col-xs-4">
+                                    @Html.Label("Cleared", new { @class = "control-label" })
+                                    @Html.CheckBoxFor(model => model.State)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-4">
+                                    @Html.Label("Products", new { @class = "control-label" })
+                                </div>
+                                <div class="col-xs-4">
+                                    @Html.Label("Quantity", new { @class = "control-label" })
+                                </div>
+                            </div>
+                            @for (int a = 0; a < Model.OrderProduct.Count; a++)
+                            {
+                                <div id="@(Model.IdOrder)OrderProduct@(a)">
+                                    <div class="form-group">
+                                        <div class="col-xs-4">
+                                            @Html.HiddenFor(model => model.OrderProduct[a].IdOrder)
+                                            @Html.DropDownListFor(model => model.OrderProduct[a].IdProduct, new SelectList(Model.ProductsList, "Value", "Text", Model.OrderProduct[a].IdProduct), new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.OrderProduct[a].IdProduct)
+                                        </div>
+                                        <div class="col-xs-4">
+                                            @Html.TextBoxFor(model => model.OrderProduct[a].Qty, new { @class = "form-control", id = $"{Model.IdOrder}OrderProductTb_{a}__Qty" })
+                                            @Html.ValidationMessageFor(model => model.OrderProduct[a].Qty)
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <button type="button" class="glyphicon glyphicon-minus btn btn-danger" onclick="removeOrderProduct('@(Model.IdOrder)OrderProduct@(a)','@(Model.IdOrder)OrderProductTb_@(a)__Qty')">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="modal-footer">
+                                <div class="form-actions no-color">
+                                    <input type="submit" value="Update" class="btn btn-success" />
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

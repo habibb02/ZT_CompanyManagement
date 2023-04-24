@@ -1,0 +1,68 @@
+﻿@model CompanyManagement.Models.OrdersViewModel
+@{
+    ViewBag.Title = "Delete Order";
+}
+
+<button type="button" class="glyphicon glyphicon-remove btn btn-danger" data-toggle="modal" data-target="#DelModal@(Model.IdOrder)">
+</button>
+
+<div class="modal fade" id="DelModal@(Model.IdOrder)" tabindex="1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3>DELETE ORDER</h3>
+            </div>
+            <div class="modal-body">
+                <div>
+                    @using (Html.BeginForm("Delete", "Order", FormMethod.Post))
+                    {
+                        @Html.HiddenFor(e => e.IdOrder)
+                        <dl class="dl-horizontal">
+                            <div class="form-group">
+                                <dt>@Html.DisplayName("Order Id")</dt>
+                                <dd>@Html.DisplayFor(model => model.IdOrder)</dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Supplier.Name)</dt>
+                                <dd>@Html.DisplayFor(model => model.Supplier.Name)</dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+                                <dd>@Html.DisplayFor(model => model.Description)</dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayName("Products")</dt>
+                                <dd>
+                                    <br />
+                                    @for (int a = 0; a < Model.OrderProduct.Count; a++)
+                                    {
+                                        @Html.HiddenFor(model => model.OrderProduct[a].Product.IdProduct)
+                                        <div><label> Name:  </label> @Html.DisplayFor(model => model.OrderProduct[a].Product.Name) <div></div><label> Qty:  </label>  @Html.DisplayFor(model => model.OrderProduct[a].Qty) <label>Price: </label> @Html.DisplayFor(model => model.OrderProduct[a].Product.Price)</div>
+                                    }
+                                </dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Price)</dt>
+                                <dd>@Html.DisplayFor(model => model.Price)</dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Date)</dt>
+                                <dd>@Html.DisplayFor(model => model.Date)</dd>
+                            </div>
+                        </dl>
+                        <div class="modal-footer">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,53 @@
+﻿@model CompanyManagement.Models.ProductsViewModel
+@{
+    ViewBag.Title = "Delete Products";
+}
+
+<button type="button" class="glyphicon glyphicon-remove btn btn-danger" data-toggle="modal" data-target="#DelModal@(Model.IdProduct)">
+</button>
+
+<div class="modal fade" id="DelModal@(Model.IdProduct)" tabindex="1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3>DELETE PRODUCT</h3>
+            </div>
+            <div class="modal-body">
+                <div>
+                    @using (Html.BeginForm("Delete", "Product", FormMethod.Post))
+                    {
+                        @Html.HiddenFor(e => e.IdProduct)
+                        <dl class="dl-horizontal">
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+                                <dd>@Html.DisplayFor(model => model.Name)</dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+                                <dd>@Html.DisplayFor(model => model.Description)</dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Price)</dt>
+                                <dd>@Html.DisplayFor(model => model.Price)</dd>
+                            </div>
+                            <div class="form-group">
+                                <dt>@Html.DisplayNameFor(model => model.Type)</dt>
+                                <dd>@Html.DisplayFor(model => model.Type)</dd>
+                            </div>
+                        </dl>
+                        <div class="modal-footer">
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

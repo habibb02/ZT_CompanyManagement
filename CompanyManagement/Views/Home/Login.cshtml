@@ -1,0 +1,55 @@
+﻿@model CompanyManagement.Models.UsersViewModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "";
+}
+
+@Styles.Render("~/Content/css")
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="text-capitalize text-uppercase"> LOGIN </h1>
+            <br />
+            <br />
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-3">
+                        @Html.Label("UserName", new { @class = "control-label" })
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.Label("Password", new { @class = "control-label" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-3">
+                        @Html.HiddenFor(model => model.IdUser)
+                        @Html.TextBoxFor(model => model.UserName, "", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.TextBoxFor(model => model.Password, "", new { @class = "form-control", type = "password" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-xs-0">
+                        <button type="submit" value="login" class="btn glyphicon glyphicon-log-in btn-primary"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (TempData["State"] != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("Errore: Credenziali errate.");
+        }
+    </script>
+}

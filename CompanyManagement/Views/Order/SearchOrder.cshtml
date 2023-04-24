@@ -1,0 +1,111 @@
+﻿@model IEnumerable<CompanyManagement.Models.OrdersViewModel>
+
+@{
+    ViewBag.Title = "Find Orders";
+}
+
+<h1 class="jumbotron">FIND ORDERS</h1>
+
+@using (Html.BeginForm("SearchOrder", "Order"))
+{
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.Label("Order Id", new { @class = "control-label" })
+            </div>
+            <div class="col-xs-2">
+                @Html.Label("Supplier Name", new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                @Html.TextBox("IdOrder", "", new { @class = "form-control" })
+            </div>
+            <div class="col-xs-2">
+                @Html.TextBox("SupplierName", "", new { @class = "form-control" })
+            </div>
+            <div class="col-xs-2">
+                @foreach (var item in Model)
+                {
+                    @Html.DropDownListFor(model => item.IdSupplier, item.SupplierList, "- Suppliers names -", new { @class = "form-control", @onchange = "ChangeTextBox()" })
+                    break;
+                }
+            </div>
+            <div class="col-xs-0">
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-search"></button>
+            </div>
+        </div>
+    </div>
+}
+
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>@Html.DisplayName("OrderId")</th>
+
+        <th>@Html.DisplayName("Supplier")</th>
+
+        <th>@Html.DisplayNameFor(model => model.Description)</th>
+
+        <th>@Html.DisplayName("Products")</th>
+
+        <th>@Html.DisplayName("Product Price")</th>
+
+        <th>@Html.DisplayName("Quantity")</th>
+
+        <th>@Html.DisplayNameFor(model => model.Price)</th>
+
+        <th>@Html.DisplayNameFor(model => model.Date)</th>
+        <th></th>
+        <th></th>
+        <th>@Html.DisplayName("Cleared")</th>
+    </tr>
+
+    @if (Model.Count() == 0)
+    {
+        <tr> L'Ordine che stai cercando non è presente. </tr>
+    }
+
+    else
+    {
+        foreach (var item in Model)
+        {
+            @Html.HiddenFor(modelItem => item.IdSupplier)
+            <tr>
+                <td></td>
+                <td>@Html.DisplayFor(modelItem => item.IdOrder)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.Supplier.Name)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+
+                <td>
+                    @foreach (var x in item.OrderProduct)
+                    {
+                        <p>@Html.DisplayName(x.Product.Name)</p>
+                    }
+                </td>
+                <td>
+                    @foreach (var x in item.OrderProduct)
+                    {
+                        <p>@Html.DisplayName("€ " + x.Product.Price.ToString())</p>
+                    }
+                </td>
+                <td>
+                    @foreach (var x in item.OrderProduct)
+                    {
+                        <p>@Html.DisplayName(x.Qty.ToString())</p>
+                    }
+                </td>
+
+                <td>@Html.DisplayName("€ " + item.Price)</td>
+
+                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                <td></td>
+                <td></td>
+                <td>@Html.CheckBoxFor(modelItem => item.State, new { onclick = "return false" })</td>
+            </tr>
+        }
+    }
+</table>

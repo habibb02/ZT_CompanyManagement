@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div class="container-fluid">
+        <div class="jumbotron text-center">
+            <h1 class="text-capitalize text-uppercase" style="color:white">ORDERS MANAGEMENT</h1>
+            <div class="row">
+                <br />
+                <br />
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <button type="button" href="~/Home/Insert" class="btn btn-default btn-outline-info btn-block btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            INSERT DATA
+                            <span class="caret"></span>
+                            <span class="sr-only"></span>
+                        </button>
+                        <ul class="dropdown-menu btn-block btn-lg">
+                            <li><a href="~/Supplier/Index">INSERT SUPPLIER</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Product/Index">INSERT PRODUCTS</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Order/Index">INSERT ORDERS</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Product/GenerateProductPrice">GENERATE PRODUCT PRICE</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" href="~/Home/Search" class="btn btn-default btn-block btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only"></span>
+                            FIND DATA
+                        </button>
+                        <ul class="dropdown-menu btn-block btn-lg">
+                            <li><a href="~/Supplier/SearchSupplier">FIND CUSTOMERS</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Product/SearchProduct">FIND PRODUCTS</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Order/SearchOrder">FIND ORDERS</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</asp:Content>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CompanyManagement.Models.SupplierViewModel>
+@{
+    ViewBag.Title = "Suppliers";
+}
+<h1 class="jumbotron" style="color:white">SUPPLIERS</h1>
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>@Html.DisplayNameFor(model => model.Name)</th>
+        
+        <th>@Html.DisplayNameFor(model => model.Phone)</th>
+        
+        <th>@Html.DisplayNameFor(model => model.Email)</th>
+        
+        <th>@Html.DisplayNameFor(model => model.Address)</th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td></td>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            
+            <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+            
+            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+            
+            <td>@Html.DisplayFor(modelItem => item.Address)</td>
+            <td></td>
+            <td>
+                @Html.Action("_DeleteSupplier", new { IdSupplier = item.IdSupplier })
+                @Html.Action("_EditSupplier", new { IdSupplier = item.IdSupplier })
+            </td>
+        </tr>
+    }
+</table>
+<div class="form-group col-xs-offset-10">
+    @Html.Action("_AddSupplier")
+    <a class="btn btn-success glyphicon glyphicon-export" href="@Url.Action("ExportExcel","Supplier",new { orderViewModelList = Model })"></a>
+</div>

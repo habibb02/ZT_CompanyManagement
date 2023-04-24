@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Portale Gestione Ordini</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <style>
+        .ddlTitle {
+        }
+    </style>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("HOME", "Index", "Home")</li>
+                    @*, new { @style = "background: #0d6efd; border-radius: 15px; padding: 4px; margin: 12px; border-color: #4398cc; border-style: double; border-width: medium;" }*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            INSERT <span class="caret" />
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Supplier/Index">INSERT SUPPLIER</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Product/Index">INSERT PRODUCTS</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Order/Index">INSERT ORDERS</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            FIND <span class="caret" />
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Supplier/SearchSupplier">FIND SUPPLIER</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Product/SearchProduct">FIND PRODUCTS</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="~/Order/SearchOrder">FIND ORDERS</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year </p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

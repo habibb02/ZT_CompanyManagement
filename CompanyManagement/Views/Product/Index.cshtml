@@ -1,0 +1,96 @@
+﻿
+@model IEnumerable<CompanyManagement.Models.ProductsViewModel>
+
+@{
+    ViewBag.Title = "Inserimento Prodotti";
+}
+
+<h1 class="jumbotron" style="color:white">PRODUCTS</h1>
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>@Html.DisplayNameFor(model => model.Name)</th>
+
+        <th>@Html.DisplayNameFor(model => model.Description)</th>
+
+        <th>@Html.DisplayNameFor(model => model.Price)</th>
+
+        <th>@Html.DisplayNameFor(model => model.Type)</th>
+        <th></th>
+        <th></th>
+
+        <th>@Html.DisplayNameFor(model => model.AttachmentFileName)</th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td></td>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+
+            <td>@Html.DisplayName("€ " + item.Price.ToString())</td>
+
+            <td><p>@Html.DisplayFor(modelItem => item.Type)</p></td>
+
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(modelItem => item.AttachmentFileName)</td>
+            <td><button type="button" class="glyphicon glyphicon-download btn btn-primary" disabled="@(string.IsNullOrEmpty(item.AttachmentFileName))" onclick="location.href='@Url.Action("_DownloadAttachment","Product", new { IdProd = item.IdProduct })'"></button></td>
+            <td>
+                @Html.Action("_DeleteProduct", new { IdProduct = item.IdProduct })
+                @Html.Action("_EditProduct", new { IdProduct = item.IdProduct })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="form-group col-xs-offset-9">
+    @Html.Action("_AddProduct")
+</div>
+
+@{
+    if (TempData["errorMsg"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("Errore: Eliminare i prodotti dagli ordini.");
+            }
+        </script>
+    }
+}
+
+<script type="text/javascript">
+
+    window.addEventListener("submit", function (e) {
+        var form = e.target;
+        if (form.getAttribute("enctype") === "multipart/form-data") {
+            if (form.dataset.ajax) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var xhr = new XMLHttpRequest();
+                xhr.open(form.method, form.action);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+                        if (form.dataset.ajaxUpdate) {
+                            var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+                            if (updateTarget) {
+                                updateTarget.innerHTML = xhr.responseText;
+                            }
+                            if (xhr.status == 200)
+                                window[form.dataset.ajaxSuccess.replace("(", "").replace(")", "")]();
+                            else
+                                window[form.dataset.ajaxFailure.replace("(", "").replace(")", "")]();
+                        }
+                    }
+                };
+                xhr.send(new FormData(form));
+                window[form.dataset.ajaxBegin.replace("(", "").replace(")", "")]();
+            }
+        }
+    }, true);
+
+</script>

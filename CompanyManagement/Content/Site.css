@@ -1,0 +1,107 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+/* All pages styles */
+h1 {
+    font-family: system-ui;
+    font-style: normal;
+    font-weight: 500;
+    text-align: center;
+}
+
+h3 {
+    font-family: system-ui;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+}
+
+label {
+    font-weight: 400;
+    font-family: system-ui;
+    font-size: medium;
+}
+
+select {
+    font-weight: normal;
+    font-family: system-ui;
+    font-size: medium;
+}
+
+table {
+    font-family: system-ui;
+}
+
+th {
+    
+}
+
+dd {
+    font-weight: lighter;
+    font-family: system-ui;
+    font-size: medium;
+}
+
+dt {
+    font-weight: 400;
+    font-family: system-ui;
+    font-size: medium;
+}
+
+.btn-block + .btn-block {
+    margin-top: 0px;
+}
+
+.btn-lg, .btn-group-lg > .btn {
+    padding: 19px;
+    font-family: system-ui;
+    border-radius: 8px;
+}
+
+a, button {
+    font-family: system-ui;
+    font-size: medium;
+}
+
+.container-fluid {
+    margin-top: 10vh;
+}
+
+.container-fluid .jumbotron {
+    border-radius: 16px;
+}
+
+.jumbotron {
+    background-color: #0d6efd; /*#4cf255;*/
+    border-radius: 12px;
+}
+
+li {
+    text-align: center;
+    font-family: system-ui;
+}
+
+.modal-content {
+    border-radius: 16px;
+}
