@@ -1,7 +1,40 @@
-﻿
+﻿@model IEnumerable<CompanyManagement.Models.SuppliedProductViewModel>
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Inserimento prodotti forniti";
 }
 
-<h2>FORNITURA PRODOTTI</h2>
+<h1 class="jumbotron" style="color:white">PRODUCTS SUPPLY</h1>
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>@Html.DisplayName("Product")</th>
 
+        <th>@Html.DisplayName("Supplier")</th>
+
+        <th>@Html.DisplayNameFor(model => model.Price)</th>
+
+        <th>@Html.DisplayNameFor(model => model.Date)</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td></td>
+            <td>@Html.DisplayFor(modelItem => item.Product.Name)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Supplier.Name)</td>
+
+            <td>@Html.DisplayName("€ " + item.Price.ToString())</td>
+
+            <td><p>@Html.DisplayFor(modelItem => item.Date)</p></td>
+            <td>
+                @Html.Action("_DeleteSuppliedProduct")
+                @Html.Action("_EditSuppliedProduct")
+            </td>
+        </tr>
+    }
+</table>
+<div class="form-group col-xs-offset-9">
+    @Html.Action("_AddSuppliedProduct")
+</div>

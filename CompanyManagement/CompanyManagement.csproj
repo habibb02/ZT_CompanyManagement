@@ -285,6 +285,9 @@
     <Content Include="Views\Product\GenerateProductPrice.cshtml" />
     <Content Include="Views\Product\_DownloadAttachment.cshtml" />
     <Content Include="Views\ProductsSupply\Index.cshtml" />
+    <Content Include="Views\ProductsSupply\_DeleteSuppliedProduct.cshtml" />
+    <Content Include="Views\ProductsSupply\_EditSuppliedProduct.cshtml" />
+    <Content Include="Views\ProductsSupply\_AddSuppliedProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
