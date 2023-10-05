@@ -37,10 +37,10 @@
                                 <dt>@Html.DisplayName("Products")</dt>
                                 <dd>
                                     <br />
-                                    @for (int a = 0; a < Model.OrderProduct.Count; a++)
+                                    @for (int a = 0; a < Model.OrderDetail.Count; a++)
                                     {
-                                        @Html.HiddenFor(model => model.OrderProduct[a].Product.IdProduct)
-                                        <div><label> Name:  </label> @Html.DisplayFor(model => model.OrderProduct[a].Product.Name) <div></div><label> Qty:  </label>  @Html.DisplayFor(model => model.OrderProduct[a].Qty) <label>Price: </label> @Html.DisplayFor(model => model.OrderProduct[a].Product.Price)</div>
+                                        @Html.HiddenFor(model => model.OrderDetail[a].Product.IdProduct)
+                                        <div><label> Name:  </label> @Html.DisplayFor(model => model.OrderDetail[a].Product.Name) <div></div><label> Qty:  </label>  @Html.DisplayFor(model => model.OrderDetail[a].Qty) <label>Price: </label> @Html.DisplayFor(model => model.OrderDetail[a].Product.Price)</div>
                                     }
                                 </dd>
                             </div>

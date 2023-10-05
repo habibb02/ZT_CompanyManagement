@@ -8,7 +8,7 @@
 <table class="table">
     <tr>
         <th></th>
-        <th>@Html.DisplayName("OrderId")</th>
+        <th>@Html.DisplayName("Order Code")</th>
 
         <th>@Html.DisplayName("Supplier")</th>
 
@@ -29,21 +29,21 @@
         @Html.HiddenFor(modelItem => item.IdSupplier)
         <tr>
             <td></td>
-            <td>@Html.DisplayFor(modelItem => item.IdOrder)</td>
+            <td>@Html.DisplayFor(modelItem => item.OrderCode)</td>
 
             <td>@Html.DisplayFor(modelItem => item.Supplier.Name)</td>
 
             <td>@Html.DisplayFor(modelItem => item.Description)</td>
 
             <td>
-                @foreach (var x in item.OrderProduct)
+                @foreach (var x in item.OrderDetail)
                 {
                     <p>@Html.DisplayName(x.Product.Name) @Html.DisplayName("€ " + x.Product.Price.ToString()) </p>
                 }
             </td>
 
             <td>
-                @foreach (var x in item.OrderProduct)
+                @foreach (var x in item.OrderDetail)
                 {
                     <p>@Html.DisplayName(x.Qty.ToString())</p>
                 }
@@ -64,13 +64,3 @@
     @Html.Action("_AddOrder")
     <a class="btn btn-success glyphicon glyphicon-export" href="@Url.Action("ExportExcel","Order",new { orderViewModelList = Model })"></a>
 </div>
-
-@*<script>
-$(document).ready(function () {
-   $(".datepicker").datepicker({
-      dateFormat: "dd-mm-yy",
-      changemonth: true,
-      changeyear: true
-      });
-   });
-</script>*@

@@ -59,18 +59,18 @@
                                     @Html.Label("Quantity", new { @class = "control-label" })
                                 </div>
                             </div>
-                            @for (int a = 0; a < Model.OrderProduct.Count; a++)
+                            @for (int a = 0; a < Model.OrderDetail.Count; a++)
                             {
                                 <div id="@(Model.IdOrder)OrderProduct@(a)">
                                     <div class="form-group">
                                         <div class="col-xs-4">
-                                            @Html.HiddenFor(model => model.OrderProduct[a].IdOrder)
-                                            @Html.DropDownListFor(model => model.OrderProduct[a].IdProduct, new SelectList(Model.ProductsList, "Value", "Text", Model.OrderProduct[a].IdProduct), new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.OrderProduct[a].IdProduct)
+                                            @Html.HiddenFor(model => model.OrderDetail[a].IdOrder)
+                                            @Html.DropDownListFor(model => model.OrderDetail[a].IdProduct, new SelectList(Model.ProductsList, "Value", "Text", Model.OrderDetail[a].IdProduct), new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.OrderDetail[a].IdProduct)
                                         </div>
                                         <div class="col-xs-4">
-                                            @Html.TextBoxFor(model => model.OrderProduct[a].Qty, new { @class = "form-control", id = $"{Model.IdOrder}OrderProductTb_{a}__Qty" })
-                                            @Html.ValidationMessageFor(model => model.OrderProduct[a].Qty)
+                                            @Html.TextBoxFor(model => model.OrderDetail[a].Qty, new { @class = "form-control", id = $"{Model.IdOrder}OrderProductTb_{a}__Qty" })
+                                            @Html.ValidationMessageFor(model => model.OrderDetail[a].Qty)
                                         </div>
                                         <div class="col-xs-4">
                                             <button type="button" class="glyphicon glyphicon-minus btn btn-danger" onclick="removeOrderProduct('@(Model.IdOrder)OrderProduct@(a)','@(Model.IdOrder)OrderProductTb_@(a)__Qty')">

@@ -12,6 +12,7 @@ namespace CompanyManagement.Models
 
         [Required(ErrorMessage = "Il campo Manpower Price è obbligatorio.")]
         public decimal Manpower { get; set; }
+
         public decimal Delivery { get; set; }
 
         [Required(ErrorMessage = "Il campo Materials Price è obbligatorio.")]
@@ -22,12 +23,13 @@ namespace CompanyManagement.Models
 
         [Required(ErrorMessage = "Il campo Fixed Costs è obbligatorio.")]
         public decimal FixedCosts { get; set; }
+
         public int PercentageIncrease { get; set; }
 
         [Required]
         public string Name { get; set; }
+
         [Required]
         public string Description { get; set; }
-
     }
 }

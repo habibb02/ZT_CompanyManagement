@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using CompanyManagement.DAL;
 using CompanyManagement.Models;
 using CompanyManagement.Repository;
+using CompanyManagement.Repository.General;
 
 namespace CompanyManagement.Controllers
 {
@@ -12,14 +13,15 @@ namespace CompanyManagement.Controllers
     {
         private IESupplierRepository _supplierRepository;
         private IEOrderRepository _orderRepository;
-        private IEOrderProductRepository _orderProductRepository;
+        private IEOrderDetailRepository _orderProductRepository;
+
         public SupplierController()
         {
-            _supplierRepository = new SupplierRepository(new CompanyMNGEntities());
-            _orderRepository = new OrderRepository(new CompanyMNGEntities());
-            _orderProductRepository = new OrderProductRepository(new CompanyMNGEntities());
+            _supplierRepository = new SupplierRepository(new UnitOfWork());
+            _orderRepository = new OrderRepository(new UnitOfWork());
+            _orderProductRepository = new OrderDetailRepository(new UnitOfWork());
         }
-        public SupplierController(IESupplierRepository supplierRepository, IEOrderRepository orderRepository, IEOrderProductRepository orderProductRepository)
+        public SupplierController(IESupplierRepository supplierRepository, IEOrderRepository orderRepository, IEOrderDetailRepository orderProductRepository)
         {
             _supplierRepository = supplierRepository;
             _orderRepository = orderRepository;
@@ -178,7 +180,7 @@ namespace CompanyManagement.Controllers
                 OrderModel = _orderRepository.GetById(x.IdOrder);
                 _orderRepository.Delete(x.IdOrder);
                 _orderRepository.Save();
-                foreach (var o in OrderModel.OrderProduct)
+                foreach (var o in OrderModel.OrderDetail)
                 {
                     _orderProductRepository.Delete(o.IdOrder, o.IdProduct);
                 }

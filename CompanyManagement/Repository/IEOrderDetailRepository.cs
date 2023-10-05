@@ -8,10 +8,8 @@ using CompanyManagement.Repository.General;
 
 namespace CompanyManagement.Repository
 {
-    public interface IEOrderProductRepository : IRepository<OrderProduct>
+    public interface IEOrderDetailRepository : IRepository<OrderDetail>
     {
-        //IEnumerable<OrderProduct> GetAll();
-        //void Update(OrderProduct orderProduct);
         void Delete(int IdOrder, int IdProduct);
     }
 }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CompanyManagement.DAL;
 using CompanyManagement.Models;
 using CompanyManagement.Repository;
+using CompanyManagement.Repository.General;
 
 namespace CompanyManagement.Controllers
 {
@@ -15,27 +16,29 @@ namespace CompanyManagement.Controllers
         private IEOrderRepository _orderRepository;
         private IESupplierRepository _supplierRepository;
         private IEProductRepository _productRepository;
-        private IEOrderProductRepository _orderProductRepository;
+        private IEOrderDetailRepository _orderDetailRepository;
 
         public OrderController()
         {
-            CompanyMNGEntities companyMNGEntities = new CompanyMNGEntities();
-            _orderProductRepository = new OrderProductRepository(companyMNGEntities);
-            _orderRepository = new OrderRepository(companyMNGEntities);
-            _supplierRepository = new SupplierRepository(companyMNGEntities);
-            _productRepository = new ProductRepository(companyMNGEntities);
+            UnitOfWork uow = new UnitOfWork();
+            _orderDetailRepository = new OrderDetailRepository(uow);
+            _orderRepository = new OrderRepository(uow);
+            _supplierRepository = new SupplierRepository(uow);
+            _productRepository = new ProductRepository(uow);
         }
-        public OrderController(IEOrderRepository orderRepository, IESupplierRepository supplierRepository, IEProductRepository productRepository, IEOrderProductRepository orderProductRepository)
+        public OrderController(IEOrderRepository orderRepository, IESupplierRepository supplierRepository, IEProductRepository productRepository, IEOrderDetailRepository OrderDetailRepository)
         {
-            _orderProductRepository = orderProductRepository;
+            _orderDetailRepository = OrderDetailRepository;
             _orderRepository = orderRepository;
             _supplierRepository = supplierRepository;
             _productRepository = productRepository;
         }
+
         private List<SelectListItem> GetSuppliersList()
         {
             return _supplierRepository.GetAll().Select(s => new SelectListItem() { Text = s.Name, Value = Convert.ToString(s.IdSupplier) }).ToList();
         }
+        
         private List<SelectListItem> GetProductsList()
         {
             return _productRepository.GetAll().Select(s => new SelectListItem() { Text = s.Name, Value = Convert.ToString(s.IdProduct) }).ToList();
@@ -51,7 +54,7 @@ namespace CompanyManagement.Controllers
                 Description = o.Description,
                 Price = o.Price,
                 IdSupplier = o.IdSupplier,
-                OrderProduct = o.OrderProduct.Select(p => new OrderProductViewModel()
+                OrderDetail = o.OrderDetail.Select(p => new OrderDetailViewModel()
                 {
                     Qty = p.Qty,
                     IdProduct = p.IdProduct,
@@ -85,7 +88,7 @@ namespace CompanyManagement.Controllers
                 Price = o.Price,
                 IdSupplier = o.IdSupplier,
                 State = o.State ?? false,
-                OrderProduct = o.OrderProduct.Select(p => new OrderProductViewModel()
+                OrderDetail = o.OrderDetail.Select(p => new OrderDetailViewModel()
                 {
                     Qty = p.Qty,
                     Product = new ProductsViewModel()
@@ -128,7 +131,7 @@ namespace CompanyManagement.Controllers
                         IdSupplier = o.Supplier.IdSupplier,
                         Name = o.Supplier.Name,
                     },
-                    OrderProduct = o.OrderProduct.Select(op => new OrderProductViewModel()
+                    OrderDetail = o.OrderDetail.Select(op => new OrderDetailViewModel()
                     {
                         IdOrder = op.IdOrder,
                         IdProduct = op.IdProduct,
@@ -153,7 +156,7 @@ namespace CompanyManagement.Controllers
             {
                 SupplierList = GetSuppliersList(),
                 ProductsList = GetProductsList(),
-                OrderProduct = new List<OrderProductViewModel>() { new OrderProductViewModel() },
+                OrderDetail = new List<OrderDetailViewModel>() { new OrderDetailViewModel() },
                 Supplier = new SupplierViewModel(),
 
             };
@@ -166,10 +169,12 @@ namespace CompanyManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var op in ordersViewModel.OrderProduct)
+                ordersViewModel.Price = !ordersViewModel.Price.HasValue ? 0 : ordersViewModel.Price;
+
+                foreach (var od in ordersViewModel.OrderDetail)
                 {
-                    Product productModel = _productRepository.GetById(op.IdProduct);
-                    ordersViewModel.Price += productModel.Price * op.Qty ?? 0;
+                    Product productModel = _productRepository.GetById(od.IdProduct);
+                    ordersViewModel.Price += (productModel.Price * od.Qty);
                 }
 
                 Order order = new Order()
@@ -183,32 +188,32 @@ namespace CompanyManagement.Controllers
                 };
                 _orderRepository.Add(order);
 
-                if (_orderRepository.Save() > 0 && ordersViewModel.OrderProduct.Count > 0)
+                if (_orderRepository.Save() > 0 && ordersViewModel.OrderDetail.Count > 0)
                 {
-                    for (int a = 0; a < ordersViewModel.OrderProduct.Count; a++)
-                        for (int b = a + 1; b < ordersViewModel.OrderProduct.Count; b++)
+                    for (int a = 0; a < ordersViewModel.OrderDetail.Count; a++)
+                        for (int b = a + 1; b < ordersViewModel.OrderDetail.Count; b++)
                         {
-                            if (ordersViewModel.OrderProduct[a].Qty != 0 && ordersViewModel.OrderProduct[a].IdProduct == ordersViewModel.OrderProduct[b].IdProduct)
+                            if (ordersViewModel.OrderDetail[a].Qty != 0 && ordersViewModel.OrderDetail[a].IdProduct == ordersViewModel.OrderDetail[b].IdProduct)
                             {
-                                ordersViewModel.OrderProduct[a].Qty = ordersViewModel.OrderProduct[a].Qty + ordersViewModel.OrderProduct[b].Qty;
-                                ordersViewModel.OrderProduct[b].Qty = 0;
+                                ordersViewModel.OrderDetail[a].Qty = ordersViewModel.OrderDetail[a].Qty + ordersViewModel.OrderDetail[b].Qty;
+                                ordersViewModel.OrderDetail[b].Qty = 0;
                             }
                         }
 
-                    foreach (var item in ordersViewModel.OrderProduct)
+                    foreach (var item in ordersViewModel.OrderDetail)
                     {
                         if (item.Qty > 0)
                         {
-                            OrderProduct orderProduct = new OrderProduct()
+                            OrderDetail OrderDetail = new OrderDetail()
                             {
                                 IdOrder = order.IdOrder,
                                 IdProduct = item.IdProduct,
                                 Qty = item.Qty,
                             };
-                            _orderProductRepository.Add(orderProduct);
+                            _orderDetailRepository.Add(OrderDetail);
                         }
                     }
-                    _orderProductRepository.Save();
+                    _orderDetailRepository.Save();
                 }
                 return RedirectToAction("Index", "Order");
             }
@@ -234,7 +239,7 @@ namespace CompanyManagement.Controllers
                     IdSupplier = orderModel.Supplier.IdSupplier,
                     Name = orderModel.Supplier.Name,
                 },
-                OrderProduct = orderModel.OrderProduct.Select(op => new OrderProductViewModel()
+                OrderDetail = orderModel.OrderDetail.Select(op => new OrderDetailViewModel()
                 {
                     IdOrder = op.IdOrder,
                     IdProduct = op.IdProduct,
@@ -249,13 +254,14 @@ namespace CompanyManagement.Controllers
             };
             return PartialView(ordersViewModel);
         }
+
         [HttpPost]
         public ActionResult Delete(int IdOrder)
         {
             Order orderModel = _orderRepository.GetById(IdOrder);
             OrdersViewModel orderViewModel = new OrdersViewModel()
             {
-                OrderProduct = orderModel.OrderProduct.Select(op => new OrderProductViewModel()
+                OrderDetail = orderModel.OrderDetail.Select(op => new OrderDetailViewModel()
                 {
                     IdProduct = op.IdProduct,
                 }).ToList()
@@ -263,10 +269,10 @@ namespace CompanyManagement.Controllers
             _orderRepository.Delete(IdOrder);
             _orderRepository.Save();
 
-            foreach (var x in orderModel.OrderProduct)
+            foreach (var x in orderModel.OrderDetail)
             {
-                _orderProductRepository.Delete(IdOrder, x.IdProduct);
-                _orderProductRepository.Save();
+                _orderDetailRepository.Delete(IdOrder, x.IdProduct);
+                _orderDetailRepository.Save();
             }
             return RedirectToAction("Index", "Order");
         }
@@ -285,7 +291,7 @@ namespace CompanyManagement.Controllers
                 Price = orderModel.Price,
                 Date = orderModel.Date,
                 State = orderModel.State.Value,
-                OrderProduct = orderModel.OrderProduct.Select(p => new OrderProductViewModel()
+                OrderDetail = orderModel.OrderDetail.Select(p => new OrderDetailViewModel()
                 {
                     Qty = p.Qty,
                     IdOrder = p.IdOrder,
@@ -310,6 +316,14 @@ namespace CompanyManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                ordersViewModel.Price = 0;
+
+                foreach (var od in ordersViewModel.OrderDetail)
+                {
+                    Product productModel = _productRepository.GetById(od.IdProduct);
+                    ordersViewModel.Price += (productModel.Price * od.Qty);
+                }
+
                 Order order = new Order()
                 {
                     IdOrder = ordersViewModel.IdOrder,
@@ -319,46 +333,47 @@ namespace CompanyManagement.Controllers
                     Price = ordersViewModel.Price,
                     State = ordersViewModel.State,
                 };
+
                 _orderRepository.Update(order);
                 _orderRepository.Save();
 
                 Order orderModel = _orderRepository.GetById(order.IdOrder);
                 List<int> ProductKeys = new List<int>();
 
-                foreach (var op in orderModel.OrderProduct)
+                foreach (var op in orderModel.OrderDetail)
                 {
                     ProductKeys.Add(op.IdProduct);
                 }
 
                 foreach (int key in ProductKeys)
                 {
-                    _orderProductRepository.Delete(order.IdOrder, key);
+                    _orderDetailRepository.Delete(order.IdOrder, key);
                 }
-                _orderProductRepository.Save();
+                _orderDetailRepository.Save();
 
-                for (int a = 0; a < ordersViewModel.OrderProduct.Count; a++)
-                    for (int b = a + 1; b < ordersViewModel.OrderProduct.Count; b++)
+                for (int a = 0; a < ordersViewModel.OrderDetail.Count; a++)
+                    for (int b = a + 1; b < ordersViewModel.OrderDetail.Count; b++)
                     {
-                        if (ordersViewModel.OrderProduct[a].Qty != 0 && ordersViewModel.OrderProduct[a].IdProduct == ordersViewModel.OrderProduct[b].IdProduct)
+                        if (ordersViewModel.OrderDetail[a].Qty != 0 && ordersViewModel.OrderDetail[a].IdProduct == ordersViewModel.OrderDetail[b].IdProduct)
                         {
-                            ordersViewModel.OrderProduct[a].Qty = ordersViewModel.OrderProduct[a].Qty + ordersViewModel.OrderProduct[b].Qty;
-                            ordersViewModel.OrderProduct[b].Qty = 0;
+                            ordersViewModel.OrderDetail[a].Qty = ordersViewModel.OrderDetail[a].Qty + ordersViewModel.OrderDetail[b].Qty;
+                            ordersViewModel.OrderDetail[b].Qty = 0;
                         }
                     }
 
-                foreach (var op in ordersViewModel.OrderProduct)
+                foreach (var op in ordersViewModel.OrderDetail)
                 {
                     if (op.Qty > 0)
                     {
-                        OrderProduct orderProduct = new OrderProduct()
+                        OrderDetail OrderDetail = new OrderDetail()
                         {
                             IdOrder = op.IdOrder,
                             IdProduct = op.IdProduct,
                             Qty = op.Qty,
                         };
 
-                        _orderProductRepository.Add(orderProduct);
-                        _orderProductRepository.Save();
+                        _orderDetailRepository.Add(OrderDetail);
+                        _orderDetailRepository.Save();
                     }
                 }
                 return RedirectToAction("Index", "Order");
@@ -368,16 +383,16 @@ namespace CompanyManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult _AddOrderProduct(int index)
+        public ActionResult _AddOrderDetail(int index)
         {
             OrdersViewModel ordersViewModel = new OrdersViewModel()
             {
                 ProductsList = GetProductsList(),
-                OrderProduct = new List<OrderProductViewModel>(),
+                OrderDetail = new List<OrderDetailViewModel>(),
             };
 
             for (int i = 0; i <= index; i++)
-                ordersViewModel.OrderProduct.Add(new OrderProductViewModel());
+                ordersViewModel.OrderDetail.Add(new OrderDetailViewModel());
 
             return PartialView(ordersViewModel);
         }
@@ -391,7 +406,7 @@ namespace CompanyManagement.Controllers
                 Description = o.Description,
                 Price = o.Price,
                 IdSupplier = o.IdSupplier,
-                OrderProduct = o.OrderProduct.Select(p => new OrderProductViewModel()
+                OrderDetail = o.OrderDetail.Select(p => new OrderDetailViewModel()
                 {
                     Qty = p.Qty,
                     IdProduct = p.IdProduct,
@@ -428,7 +443,7 @@ namespace CompanyManagement.Controllers
             {
                 Sheet.Cells[string.Format("A{0}", row)].Value = item.IdOrder;
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.Supplier.Name;
-                foreach (var op in item.OrderProduct)
+                foreach (var op in item.OrderDetail)
                 {
                     Sheet.Cells[string.Format("C{0}", row1)].Value = op.Qty;
                     Sheet.Cells[string.Format("D{0}", row1)].Value = op.Product.Name;

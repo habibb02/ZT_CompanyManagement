@@ -31,8 +31,6 @@
                                     <div class="col-xs-6">
                                         @Html.Label("Supplier", new { @class = "control-label" })
                                         @Html.DropDownListFor(model => model.IdSupplier, Model.SupplierList, " ", new { @class = "form-control" })
-                                        @*@Html.LabelFor(model => model.Description, new { @class = "control-label" })
-                                            @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })*@
                                     </div>
                                     <div class="col-xs-6">
                                         @Html.LabelFor(model => model.Date, new { @class = "control-label" })
@@ -45,8 +43,6 @@
                                     <div class="col-xs-12">
                                         @Html.LabelFor(model => model.Description, new { @class = "control-label" })
                                         @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @style = "max-width: 100%; width : 100%" })
-                                        @*@Html.Label("Supplier", new { @class = "control-label" })
-                                            @Html.DropDownListFor(model => model.IdSupplier, Model.SupplierList, " ", new { @class = "form-control" })*@
                                     </div>
                                 </div>
                             </div>
@@ -60,25 +56,25 @@
                                     </div>
                                 </div>
                                 <div id="productsContainer">
-                                    @for (int a = 0; a < Model.OrderProduct.Count; a++)
+                                    @for (int a = 0; a < Model.OrderDetail.Count; a++)
                                     {
-                                        <div id="OrderProduct@(a)">
+                                        <div id="OrderDetail@(a)">
                                             <div class="form-group">
                                                 <div class="col-xs-6">
-                                                    @Html.DropDownListFor(model => model.OrderProduct[a].IdProduct, Model.ProductsList, " ", new { @class = "form-control" })
+                                                    @Html.DropDownListFor(model => model.OrderDetail[a].IdProduct, Model.ProductsList, " ", new { @class = "form-control" })
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    @Html.TextBoxFor(model => model.OrderProduct[a].Qty, new { @class = "form-control" })
+                                                    @Html.TextBoxFor(model => model.OrderDetail[a].Qty, new { @class = "form-control" })
                                                 </div>
                                                 <div class="col-xs-2">
-                                                    <button type="button" onclick="removeOrderProduct('OrderProduct@(a)','OrderProduct_@(a)__Qty')" class="btn glyphicon glyphicon-minus btn-danger" data-toggle="modal" data-target=""></button>
+                                                    <button type="button" onclick="removeOrderDetail('OrderDetail@(a)','OrderDetail_@(a)__Qty')" class="btn glyphicon glyphicon-minus btn-danger" data-toggle="modal" data-target=""></button>
                                                 </div>
                                             </div>
                                         </div>
                                     }
                                 </div>
                             </div>
-                            <button type="button" onclick="addorderProductElement()" class="btn glyphicon glyphicon-plus btn-info btn-block">
+                            <button type="button" onclick="addOrderDetailElement()" class="btn glyphicon glyphicon-plus btn-info btn-block">
                             </button>
                             <div class="modal-footer">
                                 <input type="submit" value="Save" class="btn btn-success" />
@@ -94,9 +90,9 @@
 
 <script type="text/javascript">
 
-    function addorderProductElement() {
+    function addOrderDetailElement() {
         $.ajax({
-            url: '@Url.Action("_AddOrderProduct", "Order")?index=' + $("#productsContainer").children().length,
+            url: '@Url.Action("_AddOrderDetail", "Order")?index=' + $("#productsContainer").children().length,
             type: 'GET',
             success: function (data) {
                 console.log(data);
@@ -105,7 +101,7 @@
         });
     }
 
-    function removeOrderProduct(id, idEditor) {
+    function removeOrderDetail(id, idEditor) {
 
         var editor = document.getElementById(idEditor);
         editor.value = 0;
@@ -116,7 +112,6 @@
         var container = document.getElementById(id);
         console.log(container);
         container.style.display = "none";
-
     }
 
 </script>

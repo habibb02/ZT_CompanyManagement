@@ -9,7 +9,7 @@ namespace CompanyManagement.Repository
 {
     public class ProductsSupplyRepository : Repository<SuppliedProduct>
     {
-        public ProductsSupplyRepository(CompanyMNGEntities context) : base(context)
+        public ProductsSupplyRepository(UnitOfWork uow) : base(uow)
         {
         }
     }

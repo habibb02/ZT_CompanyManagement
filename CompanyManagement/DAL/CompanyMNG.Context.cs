@@ -9,11 +9,12 @@
 
 namespace CompanyManagement.DAL
 {
+    using CompanyManagement.Repository.General;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class CompanyMNGEntities : DbContext
+    public partial class CompanyMNGEntities : DbContext, IContext
     {
         public CompanyMNGEntities()
             : base("name=CompanyMNGEntities")
@@ -26,10 +27,9 @@ namespace CompanyManagement.DAL
         }
     
         public virtual DbSet<Order> Order { get; set; }
-        public virtual DbSet<OrderProduct> OrderProduct { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<SuppliedProduct> SuppliedProduct { get; set; }
         public virtual DbSet<Supplier> Supplier { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetail { get; set; }
     }
 }

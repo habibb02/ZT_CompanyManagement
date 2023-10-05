@@ -81,19 +81,19 @@
                 <td>@Html.DisplayFor(modelItem => item.Description)</td>
 
                 <td>
-                    @foreach (var x in item.OrderProduct)
+                    @foreach (var x in item.OrderDetail)
                     {
                         <p>@Html.DisplayName(x.Product.Name)</p>
                     }
                 </td>
                 <td>
-                    @foreach (var x in item.OrderProduct)
+                    @foreach (var x in item.OrderDetail)
                     {
                         <p>@Html.DisplayName("€ " + x.Product.Price.ToString())</p>
                     }
                 </td>
                 <td>
-                    @foreach (var x in item.OrderProduct)
+                    @foreach (var x in item.OrderDetail)
                     {
                         <p>@Html.DisplayName(x.Qty.ToString())</p>
                     }

@@ -1,6 +1,7 @@
 ﻿using CompanyManagement.DAL;
 using CompanyManagement.Models;
 using CompanyManagement.Repository;
+using CompanyManagement.Repository.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace CompanyManagement.Controllers
 
         public ProductsSupplyController()
         {
-            _productsSupplyRepository = new ProductsSupplyRepository(new CompanyMNGEntities());
+            _productsSupplyRepository = new ProductsSupplyRepository(new UnitOfWork());
         }
 
         [HttpGet]
@@ -35,20 +36,9 @@ namespace CompanyManagement.Controllers
         }
 
         [HttpGet]
-        public ActionResult _AddSuppliedProduct(int IdSupplier, int IdProduct)
+        public ActionResult _AddSuppliedProduct()
         {
-            SuppliedProduct suppliedProduct = _productsSupplyRepository.Find(new object[] { IdSupplier, IdProduct });
-            SuppliedProductViewModel suppliedProductViewModel = new SuppliedProductViewModel()
-            {
-                IdSupplier = suppliedProduct.IdSupplier,
-                IdProduct = suppliedProduct.IdProduct,
-                Price = suppliedProduct.Price,
-                Date = suppliedProduct.Date,
-                Supplier = suppliedProduct.Supplier,
-                Product = suppliedProduct.Product
-            };
-
-            return PartialView(suppliedProductViewModel);
+            return PartialView();
         }
 
         [HttpGet]

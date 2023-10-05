@@ -9,20 +9,22 @@ namespace CompanyManagement.Repository.General
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly CompanyMNGEntities _context;
-        public Repository(CompanyMNGEntities context)
+        //private readonly CompanyMNGEntities _context;
+        protected UnitOfWork _uow;
+
+        public Repository(UnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>().AsEnumerable();
+            return _uow.Context.Set<T>().AsEnumerable();
         }
 
         public T Find(object[] keyValues)
         {
-            return _context.Set<T>().Find(keyValues);
+            return _uow.Context.Set<T>().Find(keyValues);
         }
 
         public void Add(T entity)
@@ -30,7 +32,7 @@ namespace CompanyManagement.Repository.General
             if (entity == null)
                 throw new ArgumentException("Cannot add a null entity");
 
-            _context.Set<T>().Add(entity);
+            _uow.Context.Set<T>().Add(entity);
         }
 
         public void Update(T entity)
@@ -38,7 +40,7 @@ namespace CompanyManagement.Repository.General
             if (entity == null)
                 throw new ArgumentException("Cannot add a null entity");
 
-            _context.Entry(entity).State = EntityState.Modified;
+            _uow.Context.Entry(entity).State = EntityState.Modified;
 
         }
 
@@ -47,7 +49,7 @@ namespace CompanyManagement.Repository.General
             if (entity == null)
                 throw new ArgumentException("Cannot add a null entity");
 
-            _context.Set<T>().Remove(entity);
+            _uow.Context.Set<T>().Remove(entity);
         }
 
         public void Attach(T entity)
@@ -55,17 +57,17 @@ namespace CompanyManagement.Repository.General
             if (entity == null)
                 throw new ArgumentException("Cannot add a null entity");
 
-            _context.Set<T>().Attach(entity);
+            _uow.Context.Set<T>().Attach(entity);
         }
 
         public void Save()
         {
-            _context.SaveChanges();
+            _uow.Context.SaveChanges();
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            _uow.Dispose();
         }
     }
 }

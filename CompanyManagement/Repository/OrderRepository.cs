@@ -8,30 +8,20 @@ namespace CompanyManagement.Repository
 {
     public class OrderRepository : Repository<Order>, IEOrderRepository
     {
-        private readonly CompanyMNGEntities _context;
-        //public OrderRepository() : base(context)
-        //{
-        //    _context = new CompanyMNGEntities();
-        //}
-        public OrderRepository(CompanyMNGEntities context) : base(context)
+        public OrderRepository(UnitOfWork uow) : base(uow)
         {
-            _context = context;
         }
+        
         public void Delete(int IdOrder)
         {
-            Order order = _context.Order.Find(IdOrder);
-            _context.Order.Remove(order);
+            Order order = _uow.Context.Order.Find(IdOrder);
+            _uow.Context.Order.Remove(order);
         }
-
-        //public IEnumerable<Order> GetAll()
-        //{
-        //    return _context.Order.ToList();
-        //}
         
         public IEnumerable<Order> GetOrdersBySupplierId(int IdSupplier)
         {
             return
-                _context.Order
+                _uow.Context.Order
                 .Where(o => 
                 o.Supplier.IdSupplier == IdSupplier
                 ).ToList();
@@ -40,7 +30,7 @@ namespace CompanyManagement.Repository
         public IEnumerable<Order> GetOrdersByIdName(string idOrderPk, string supplierName)
         {
             return
-                _context.Order
+                _uow.Context.Order
                 .Where(o =>
                     (string.IsNullOrEmpty(idOrderPk) || o.IdOrder.ToString().Contains(idOrderPk))
                     && (string.IsNullOrEmpty(supplierName) || o.Supplier.Name.ToLower().Contains(supplierName.ToLower()))
@@ -49,22 +39,17 @@ namespace CompanyManagement.Repository
         
         public Order GetById(int IdOrder)
         {
-            return _context.Order.Include(nameof(Order.OrderProduct)).FirstOrDefault(o => o.IdOrder == IdOrder);
+            return _uow.Context.Order.Include(nameof(Order.OrderDetail)).FirstOrDefault(o => o.IdOrder == IdOrder);
         }
 
         public void Insert(Order order)
         {
-            _context.Order.Add(order);
+            _uow.Context.Order.Add(order);
         }
 
         public new int Save()
         {
-            return _context.SaveChanges();
+            return _uow.Context.SaveChanges();
         }
-
-        //public void Update(Order order)
-        //{
-        //    _context.Entry(order).State = EntityState.Modified;
-        //}
     }
 }

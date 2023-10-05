@@ -11,12 +11,12 @@ namespace CompanyManagement.Repository
     public interface IEProductRepository : IRepository<Product>
     {
         IEnumerable<Product> GetAll();
+
         IEnumerable<Product> GetProductsByIdName(string ProductName, string idProd);
 
         Product GetById(int IdProduct);
 
         void Delete(int IdProduct);
 
-        void Update(Product product);
     }
 }

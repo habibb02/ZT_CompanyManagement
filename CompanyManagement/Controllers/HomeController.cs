@@ -27,31 +27,5 @@ namespace CompanyManagement.Controllers
         {
             return View();
         }
-        //public ActionResult Login()
-        //{
-        //    return View();
-        //}
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(UsersViewModel user)
-        {
-            using (CompanyMNGEntities db = new CompanyMNGEntities())
-            {
-                var loginUser = db.User.Where(x => x.UserName.Equals(user.UserName) && x.Password.Equals(user.Password)).FirstOrDefault();
-
-                if (loginUser != null)
-                {
-                    Session["IdUser"] = loginUser.IdUser.ToString();
-                    Session["UserName"] = loginUser.UserName.ToString();
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    TempData["State"] = "err";
-                    return View(user);
-                }
-            }
-        }
     }
 }

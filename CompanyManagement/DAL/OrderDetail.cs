@@ -12,7 +12,7 @@ namespace CompanyManagement.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderProduct
+    public partial class OrderDetail
     {
         public int IdOrder { get; set; }
         public int IdProduct { get; set; }

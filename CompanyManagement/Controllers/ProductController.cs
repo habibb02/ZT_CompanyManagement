@@ -8,6 +8,7 @@ using CompanyManagement.Models;
 using System.Web.Mvc;
 using System.Text;
 using System.IO;
+using CompanyManagement.Repository.General;
 
 namespace CompanyManagement.Controllers
 {
@@ -19,8 +20,8 @@ namespace CompanyManagement.Controllers
 
         public ProductController()
         {
-            _orderRepository = new OrderRepository(new CompanyMNGEntities());
-            _productRepository = new ProductRepository(new CompanyMNGEntities());
+            _orderRepository = new OrderRepository(new UnitOfWork());
+            _productRepository = new ProductRepository(new UnitOfWork());
         }
         public ProductController(IEProductRepository productRepository, IEOrderRepository orderRepository)
         {
@@ -205,7 +206,10 @@ namespace CompanyManagement.Controllers
             try
             {
                 productPriceViewModel.Delivery = productPriceViewModel.Delivery / productPriceViewModel.Qty;
-                productPriceViewModel.Price = (productPriceViewModel.Materials + productPriceViewModel.Manpower + productPriceViewModel.FixedCosts) + (productPriceViewModel.Materials + productPriceViewModel.Manpower + productPriceViewModel.FixedCosts) * productPriceViewModel.PercentageIncrease / 100 + productPriceViewModel.Delivery;
+                productPriceViewModel.Price =
+                    (productPriceViewModel.Materials + productPriceViewModel.Manpower + productPriceViewModel.FixedCosts)
+                    + (productPriceViewModel.Materials + productPriceViewModel.Manpower + productPriceViewModel.FixedCosts)
+                    * productPriceViewModel.PercentageIncrease / 100 + productPriceViewModel.Delivery;
 
                 Product product = new Product()
                 {
@@ -214,6 +218,7 @@ namespace CompanyManagement.Controllers
                     Price = productPriceViewModel.Price,
                     Type = "generated",
                 };
+
                 _productRepository.Add(product);
                 _productRepository.Save();
             }
@@ -252,5 +257,4 @@ namespace CompanyManagement.Controllers
                 return null;
         }
     }
-
 }

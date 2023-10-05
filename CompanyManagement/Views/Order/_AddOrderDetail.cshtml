@@ -1,0 +1,15 @@
+﻿@model CompanyManagement.Models.OrdersViewModel
+
+
+<div id="OrderDetail@(Model.OrderDetail.Count-1)" class=" form-group">
+    <div class="col-xs-6">
+        @Html.DropDownListFor(model => model.OrderDetail[Model.OrderDetail.Count - 1].IdProduct, Model.ProductsList, " ", new { @class = "form-control" })
+    </div>
+    <div class="col-xs-4">
+        @Html.TextBoxFor(model => model.OrderDetail[Model.OrderDetail.Count - 1].Qty, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.OrderDetail[Model.OrderDetail.Count - 1].Qty)
+    </div>
+    <div class="col-xs-2">
+        <button type="button" onclick="removeOrderDetail('OrderDetail@(Model.OrderDetail.Count-1)','OrderDetail_@(Model.OrderDetail.Count-1)__Qty')" class="btn glyphicon glyphicon-minus btn-danger" data-toggle="modal" data-target=""></button>
+    </div>
+</div>

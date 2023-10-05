@@ -173,7 +173,7 @@
     <Compile Include="DAL\Order.cs">
       <DependentUpon>CompanyMNG.tt</DependentUpon>
     </Compile>
-    <Compile Include="DAL\OrderProduct.cs">
+    <Compile Include="DAL\OrderDetail.cs">
       <DependentUpon>CompanyMNG.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL\Product.cs">
@@ -185,27 +185,25 @@
     <Compile Include="DAL\Supplier.cs">
       <DependentUpon>CompanyMNG.tt</DependentUpon>
     </Compile>
-    <Compile Include="DAL\User.cs">
-      <DependentUpon>CompanyMNG.tt</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\SuppliedProductViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
-    <Compile Include="Models\OrderProductViewModel.cs" />
+    <Compile Include="Models\OrderDetailViewModel.cs" />
     <Compile Include="Models\OrdersViewModel.cs" />
     <Compile Include="Models\ProductPriceViewModel.cs" />
     <Compile Include="Models\ProductsViewModel.cs" />
-    <Compile Include="Models\UsersViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\General\IContext.cs" />
     <Compile Include="Repository\General\IRepository.cs" />
+    <Compile Include="Repository\General\IUnitOfWork.cs" />
     <Compile Include="Repository\General\Repository.cs" />
     <Compile Include="Repository\General\UnitOfWork.cs" />
     <Compile Include="Repository\ProductsSupplyRepository.cs" />
     <Compile Include="Repository\SupplierRepository.cs" />
     <Compile Include="Repository\IESupplierRepository.cs" />
-    <Compile Include="Repository\IEOrderProductRepository.cs" />
+    <Compile Include="Repository\IEOrderDetailRepository.cs" />
     <Compile Include="Repository\IEOrderRepository.cs" />
     <Compile Include="Repository\IEProductRepository.cs" />
     <Compile Include="Repository\OrderProductRepository.cs" />
@@ -277,7 +275,7 @@
     <Content Include="Views\Product\_EditProduct.cshtml" />
     <Content Include="Views\Product\_AddProduct.cshtml" />
     <Content Include="Views\Order\_AddOrder.cshtml" />
-    <Content Include="Views\Order\_AddOrderProduct.cshtml" />
+    <Content Include="Views\Order\_AddOrderDetail.cshtml" />
     <Content Include="Views\Supplier\SearchSupplier.cshtml" />
     <Content Include="Views\Order\SearchOrder.cshtml" />
     <Content Include="Views\Product\SearchProduct.cshtml" />
@@ -291,7 +289,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

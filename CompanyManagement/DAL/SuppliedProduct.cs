@@ -17,7 +17,7 @@ namespace CompanyManagement.DAL
         public int IdSupplier { get; set; }
         public int IdProduct { get; set; }
         public Nullable<decimal> Price { get; set; }
-        public Nullable<decimal> Date { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     
         public virtual Product Product { get; set; }
         public virtual Supplier Supplier { get; set; }

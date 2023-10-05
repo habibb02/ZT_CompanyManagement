@@ -17,7 +17,7 @@ namespace CompanyManagement.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Order()
         {
-            this.OrderProduct = new HashSet<OrderProduct>();
+            this.OrderDetail = new HashSet<OrderDetail>();
         }
     
         public int IdOrder { get; set; }
@@ -29,6 +29,6 @@ namespace CompanyManagement.DAL
     
         public virtual Supplier Supplier { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderProduct> OrderProduct { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }
 }

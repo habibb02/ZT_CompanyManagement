@@ -6,48 +6,26 @@ using CompanyManagement.Repository.General;
 
 namespace CompanyManagement.Repository
 {
-    public class OrderProductRepository : Repository<OrderProduct>, IEOrderProductRepository
+    public class OrderDetailRepository : Repository<OrderDetail>, IEOrderDetailRepository
     {
-        private readonly CompanyMNGEntities _context;
-        //public OrderProductRepository()
-        //{
-        //    _context = new CompanyMNGEntities();
-        //}
-        public OrderProductRepository(CompanyMNGEntities context) : base(context)
+        public OrderDetailRepository(UnitOfWork uow) : base(uow)
         {
-            _context = context;
         }
 
-        //public IEnumerable<OrderProduct> GetAll()
-        //{
-        //    return _context.OrderProduct.ToList();
-        //}
-
-        public OrderProduct GetById(int IdOrder)
+        public OrderDetail GetById(int IdOrder)
         {
-            return _context.OrderProduct.Find(IdOrder);
+            return _uow.Context.OrderDetail.Find(IdOrder);
         }
 
-        public void Insert(OrderProduct orderProduct)
+        public void Insert(OrderDetail OrderDetail)
         {
-            _context.OrderProduct.Add(orderProduct);
+            _uow.Context.OrderDetail.Add(OrderDetail);
         }
-
-        //public int Save()
-        //{
-        //    return
-        //        _context.SaveChanges();
-        //}
-
-        //public void Update(OrderProduct orderProduct)
-        //{
-        //    _context.Entry(orderProduct).State = EntityState.Modified;
-        //}
 
         public void Delete(int IdOrder, int IdProduct)
         {
-            OrderProduct orderProduct = _context.OrderProduct.Find(IdOrder, IdProduct);
-            _context.OrderProduct.Remove(orderProduct);
+            OrderDetail OrderDetail = _uow.Context.OrderDetail.Find(IdOrder, IdProduct);
+            _uow.Context.OrderDetail.Remove(OrderDetail);
         }
     }
 }

@@ -17,8 +17,8 @@ namespace CompanyManagement.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
-            this.OrderProduct = new HashSet<OrderProduct>();
             this.SuppliedProduct = new HashSet<SuppliedProduct>();
+            this.OrderDetail = new HashSet<OrderDetail>();
         }
     
         public int IdProduct { get; set; }
@@ -30,8 +30,8 @@ namespace CompanyManagement.DAL
         public string AttachmentFileName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderProduct> OrderProduct { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SuppliedProduct> SuppliedProduct { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }
 }
